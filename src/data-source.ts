@@ -10,6 +10,7 @@ import { createTable21684695510954 } from "./migrations/1684695510954-createTabl
 import { TypeRestaurant } from "./entities/typeRestaurant.entity";
 import { DayWeek } from "./entities/daysWeek.entity";
 import { OpeningHour } from "./entities/openingHours.entity";
+import { createTables21684695598282 } from "./migrations/1684695598282-createTables2";
 
 const setDataSourceConfig = (): DataSourceOptions => {
   const entitiesPath: string = path.join(__dirname, "./entities/**.{js,ts}");
@@ -52,6 +53,7 @@ const setDataSourceConfig = (): DataSourceOptions => {
       createTables1684524058296,
       createTables1684524123001,
       createTable21684695510954,
+      createTables21684695598282,
     ],
   };
 };
