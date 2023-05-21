@@ -7,10 +7,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BeforeInsert,
-  DeleteDateColumn,
   BeforeUpdate,
   OneToMany,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
+import { TypeRestaurant } from "./typeRestaurant.entity";
+import { DayWeek } from "./daysWeek.entity";
 
 @Entity("Restaurants")
 class Restaurant {
@@ -26,6 +30,11 @@ class Restaurant {
   @Column()
   phone: string;
 
+  @Column()
+  document: string;
+  @Column()
+  description: string;
+
   @Column({
     default:
       "https://cdn3.iconfinder.com/data/icons/indian-woman-professions/512/13-512.png",
@@ -40,6 +49,16 @@ class Restaurant {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(
+    () => TypeRestaurant,
+    (typeRestaurant) => typeRestaurant.restaurants
+  )
+  typeRestaurant: TypeRestaurant;
+
+  @ManyToMany(() => DayWeek)
+  @JoinTable()
+  daysOfWeek: DayWeek[];
 
   @BeforeUpdate()
   @BeforeInsert()
