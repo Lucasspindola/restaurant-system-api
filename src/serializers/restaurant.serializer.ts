@@ -26,7 +26,7 @@ const restaurantWithoutPasswordFieldSerializer = yup.object().shape({
   phone: yup.string().optional(),
   document: yup.string().optional(),
   description: yup.string().required(),
-  profileImage: yup.string().url().optional(),
+  profileImage: yup.string().optional(),
   typeRestaurant: yup.object().shape({
     id: yup.string().uuid().required(),
   }),

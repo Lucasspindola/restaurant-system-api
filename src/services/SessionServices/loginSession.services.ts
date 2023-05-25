@@ -6,10 +6,15 @@ import { Restaurant } from "../../entities/restaurant.entity";
 import { AppError } from "../../errors/AppError";
 import "dotenv/config";
 
+interface ILoginResponse {
+  token: string;
+  restaurantId: string;
+}
+
 const loginSessionService = async ({
   email,
   password,
-}: IRestaurantLogin): Promise<string> => {
+}: IRestaurantLogin): Promise<ILoginResponse> => {
   const restaurantRepository = AppDataSource.getRepository(Restaurant);
   const restaurant = await restaurantRepository.findOne({
     where: { email: email },
@@ -31,7 +36,12 @@ const loginSessionService = async ({
     expiresIn: "24h",
   });
 
-  return token;
+  const response: ILoginResponse = {
+    token,
+    restaurantId: String(restaurant.id),
+  };
+
+  return response;
 };
 
 export default loginSessionService;

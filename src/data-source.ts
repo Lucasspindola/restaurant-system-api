@@ -4,13 +4,11 @@ import path from "path";
 
 import { DataSource, DataSourceOptions } from "typeorm";
 import { Restaurant } from "./entities/restaurant.entity";
-import { createTables1684524058296 } from "./migrations/1684524058296-createTables";
-import { createTables1684524123001 } from "./migrations/1684524123001-createTables";
-import { createTable21684695510954 } from "./migrations/1684695510954-createTable2";
 import { TypeRestaurant } from "./entities/typeRestaurant.entity";
 import { DayWeek } from "./entities/daysWeek.entity";
 import { OpeningHour } from "./entities/openingHours.entity";
-import { createTables21684695598282 } from "./migrations/1684695598282-createTables2";
+import { createTables1684766895764 } from "./migrations/1684766895764-createTables";
+import { createTables1684766948188 } from "./migrations/1684766948188-createTables";
 
 const setDataSourceConfig = (): DataSourceOptions => {
   const entitiesPath: string = path.join(__dirname, "./entities/**.{js,ts}");
@@ -49,12 +47,7 @@ const setDataSourceConfig = (): DataSourceOptions => {
     synchronize: false,
     logging: true,
     entities: [Restaurant, TypeRestaurant, DayWeek, OpeningHour],
-    migrations: [
-      createTables1684524058296,
-      createTables1684524123001,
-      createTable21684695510954,
-      createTables21684695598282,
-    ],
+    migrations: [createTables1684766895764, createTables1684766948188],
   };
 };
 

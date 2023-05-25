@@ -15,6 +15,7 @@ import {
 } from "typeorm";
 import { TypeRestaurant } from "./typeRestaurant.entity";
 import { DayWeek } from "./daysWeek.entity";
+import { OpeningHour } from "./openingHours.entity";
 
 @Entity("Restaurants")
 class Restaurant {
@@ -56,9 +57,12 @@ class Restaurant {
   )
   typeRestaurant: TypeRestaurant;
 
-  @ManyToMany(() => DayWeek)
+  @ManyToMany(() => DayWeek, (dayWeek) => dayWeek.restaurant)
   @JoinTable()
   daysOfWeek: DayWeek[];
+
+  @OneToMany(() => OpeningHour, (openingHour) => openingHour.restaurant)
+  openingHours: OpeningHour[];
 
   @BeforeUpdate()
   @BeforeInsert()

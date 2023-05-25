@@ -1,10 +1,9 @@
 import AppDataSource from "../../data-source";
 import { DayWeek } from "../../entities/daysWeek.entity";
+import { LessThanOrEqual, MoreThanOrEqual } from "typeorm";
 import { OpeningHour } from "../../entities/openingHours.entity";
-import { Restaurant } from "../../entities/restaurant.entity";
-import { TypeRestaurant } from "../../entities/typeRestaurant.entity";
 import { AppError } from "../../errors/AppError";
-import { restaurantWithoutPasswordFieldSerializer } from "../../serializers/restaurant.serializer";
+import { IResponseNewSchedule } from "../../interfaces/shedules";
 
 const validDaysOfWeek = [
   "segunda-feira",
@@ -19,12 +18,13 @@ const validDaysOfWeek = [
 const createNewSchedulesService = async (
   dataSchedules: any,
   restaurantId: string
-): Promise<any> => {
+): Promise<IResponseNewSchedule> => {
   const { dayWeek, openTime, closingTime } = dataSchedules;
 
   if (!validDaysOfWeek.includes(dayWeek.toLowerCase())) {
     throw new AppError(422, "The value of 'dayWeek' is invalid.");
   }
+
   const schedulesRepository = AppDataSource.getRepository(OpeningHour);
   const weekDayRepository = AppDataSource.getRepository(DayWeek);
 
@@ -42,16 +42,48 @@ const createNewSchedulesService = async (
     await weekDayRepository.save(findWeekDay);
   }
 
+  const conflictingSchedules = await schedulesRepository.find({
+    where: {
+      dayWeek: { id: findWeekDay.id },
+      openTime: LessThanOrEqual(closingTime),
+      closingTime: MoreThanOrEqual(closingTime),
+    },
+  });
+
+  if (conflictingSchedules.length > 0) {
+    throw new AppError(
+      422,
+      "Conflicting schedule. Please choose a different time."
+    );
+  }
+
+  const conflictingSchedulesx = await schedulesRepository.find({
+    where: {
+      dayWeek: { id: findWeekDay.id },
+      openTime: LessThanOrEqual(openTime),
+      closingTime: MoreThanOrEqual(openTime),
+    },
+  });
+
+  if (conflictingSchedulesx.length > 0) {
+    throw new AppError(
+      422,
+      "Conflicting schedule. Please choose a different time."
+    );
+  }
+
   const newSchedule = {
     openTime,
     closingTime,
   };
+
   const scheduleCreated = schedulesRepository.create({
     ...newSchedule,
     dayWeek: { id: findWeekDay.id },
+    restaurant: { id: restaurantId },
   });
   await schedulesRepository.save(scheduleCreated);
-  return scheduleCreated;
+  return { ...scheduleCreated };
 };
 
 export default createNewSchedulesService;
