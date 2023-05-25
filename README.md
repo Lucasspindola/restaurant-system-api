@@ -1,5 +1,10 @@
-
 # restaurant-system-api
+
+url-back:
+https://restaurant-api-deploy.onrender.com
+
+link repositorio front;
+https://restaurant-api-deploy.onrender.com
 
 ## Tabela de Conteúdos
 
@@ -60,7 +65,6 @@ Configure suas variáveis de ambiente com suas credenciais do Postgres e uma nov
 
 ### 3.3 Conectando database
 
-
 Não esquecer de criar e rodar as migrações no seu data-base.
 yarn typeorm migration:run -d src/data-source
 
@@ -69,4 +73,7 @@ Com isso feito, para rodar sua aplicação, basta utilizar o comando
 ```
 yarn dev
 ```
+
+```
+
 ```
