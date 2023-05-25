@@ -10,7 +10,8 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "test": "cross-env NODE_ENV=test SECRET_KEY=secret_key jest  --verbose --runInBand",
     "build": "tsc",
-    "start": "node dist/src/server.js"
+    "start": "node dist/src/server.js",
+    "vercel-build": "yarn typeorm migration:run -d src/data-source.ts"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
