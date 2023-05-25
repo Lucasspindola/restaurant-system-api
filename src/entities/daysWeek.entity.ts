@@ -18,7 +18,9 @@ class DayWeek {
   @ManyToOne(() => Restaurant, (restaurant) => restaurant.daysOfWeek)
   restaurant: Restaurant;
 
-  @OneToMany(() => OpeningHour, (openingHour) => openingHour.dayWeek)
+  @OneToMany(() => OpeningHour, (openingHour) => openingHour.dayWeek, {
+    cascade: true,
+  })
   openingHours: OpeningHour[];
 }
 

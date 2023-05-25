@@ -6,7 +6,7 @@ import loginSessionService from "../services/SessionServices/loginSession.servic
 const loginSessionController = async (req: Request, res: Response) => {
   const dataSession: IRestaurantLogin = req.body;
   const token = await loginSessionService(dataSession);
-  return res.status(200).json({ token });
+  return res.status(200).json(token);
 };
 
 export { loginSessionController };

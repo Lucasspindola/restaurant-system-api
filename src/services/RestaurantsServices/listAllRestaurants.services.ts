@@ -1,27 +1,12 @@
 import AppDataSource from "../../data-source";
-import { Restaurant } from "../../entities/restaurant.entity";
+import { DayWeek } from "../../entities/daysWeek.entity";
 const listAllRestaurantsService = async () => {
-  const restaurantRepository = AppDataSource.getRepository(Restaurant);
-  const allRestaurants = await restaurantRepository
-    .createQueryBuilder("restaurant")
-    .leftJoinAndSelect("restaurant.typeRestaurant", "typeRestaurant")
-    .leftJoinAndSelect("restaurant.daysOfWeek", "dayWeek")
-    .leftJoinAndSelect("dayWeek.openingHours", "openingHour")
-    .select([
-      "typeRestaurant",
-      "restaurant.id",
-      "restaurant.name",
-      "restaurant.email",
-      "restaurant.phone",
-      "restaurant.document",
-      "restaurant.description",
-      "restaurant.profileImage",
-      "restaurant.createdAt",
-      "restaurant.updatedAt",
-      "openingHour.openTime",
-      "openingHour.closingTime",
-    ])
-    .getMany();
-  return allRestaurants;
+  const dayWeekRepository = AppDataSource.getRepository(DayWeek);
+  const dayWeeks = await dayWeekRepository.find({
+    where: { openingHours: { restaurant: {} } },
+    relations: ["restaurant", "openingHours"],
+  });
+  return dayWeeks;
 };
+
 export default listAllRestaurantsService;
