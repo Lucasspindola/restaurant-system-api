@@ -6,7 +6,7 @@
   "author": "Lucas <lucasspindolafernandes196@hotmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --ignore-watch node_modules src/server.ts",
+    "dev": "ts-node-dev --ignore-watch node_modules --rs --cls src/server.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "test": "cross-env NODE_ENV=test SECRET_KEY=secret_key jest  --verbose --runInBand",
     "build": "tsc",
